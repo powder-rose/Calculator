@@ -9,6 +9,7 @@ export default function Calculator() {
     const [ firstOperand, setFirstOperand ] = useState(null);
     const [ field, setField ] = useState("");
     const [operator, setOperator] = useState(null);
+    const [isResult, setIsResult] = useState(false);
 
     const handleChange = (event) => {
         setField(event.target.value);
@@ -25,32 +26,39 @@ export default function Calculator() {
     };
 
     const chooseOperator = (operator) => {
+        if (field === "") return;
         setFirstOperand(Number(field));
         setOperator(operator);
         setField("");
+        setIsResult(false);
     };
 
     const calculate = () => {
-        const secondOperand = Number(field);
-
         if (operator === null || firstOperand === null || field === "") {
             return;
         }
+        const secondOperand = Number(field);
+        let result;
 
         if (operator === "+") {
-            setField(firstOperand + secondOperand);
+            setField((result = firstOperand + secondOperand));
         } else {
-            setField(firstOperand - secondOperand);
+            setField((result = firstOperand - secondOperand));
         }
-
+        setField(String(result));
         setOperator(null);
         setFirstOperand(null);
+        setIsResult(true);
     };
 
     return (
         <div className={styles.container}>
             <div className={styles.buttonsContainer}>
-                <Field value={field} onInput={handleChange} className={styles.input} />
+                <Field
+                    value={field}
+                    onInput={handleChange}
+                    className={`${styles.input} ${isResult ? styles.colorResult : ""}`}
+                />
                 {NUMS.map((element) => {
                     return (
                         <Button
