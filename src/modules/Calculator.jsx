@@ -7,7 +7,6 @@ const NUMS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 
 export default function Calculator() {
     const [ firstOperand, setFirstOperand ] = useState(null);
-    const [ setSecondOperand ] = useState(null);
     const [ field, setField ] = useState("");
     const [operator, setOperator] = useState(null);
 
@@ -22,7 +21,7 @@ export default function Calculator() {
     const clean = () => {
         setField("");
         setFirstOperand(null);
-        setSecondOperand(null);
+        setOperator(null);
     };
 
     const chooseOperator = (operator) => {
@@ -33,6 +32,10 @@ export default function Calculator() {
 
     const calculate = () => {
         const secondOperand = Number(field);
+
+        if (operator === null || firstOperand === null || field === "") {
+            return;
+        }
 
         if (operator === "+") {
             setField(firstOperand + secondOperand);
@@ -51,7 +54,7 @@ export default function Calculator() {
                 {NUMS.map((element) => {
                     return (
                         <Button
-                            onClick={putNumber}
+                            onClick={() => putNumber(element)}
                             key={element}
                             value={element}
                             className={`${styles.button} ${styles.buttonNumbers}`}
