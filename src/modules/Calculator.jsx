@@ -17,6 +17,7 @@ export default function Calculator() {
 
     const putNumber = (value) => {
         setField((prev) => prev + value);
+        setIsResult(false);
     };
 
     const clean = () => {
